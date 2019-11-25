@@ -4,21 +4,39 @@
 
 .todo-todos {
   border: 1px solid red;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .completed-todos {
   border: 1px solid green;
+  border-radius: 10px;
 }
+
+/* .todo-todos, .completed-todos {
+    text-align: center;
+}
+
+.todo-todos::before {
+    content: 'Todos';
+}
+.completed-todos::before {
+    content: 'Completed';
+}
+.todo-todos::before, .completed-todos::before {
+    font-size: 20px;
+    margin: 15px 0px;
+} */
 
 .add-todo {
     text-align: center;
 }
 
 .add-button {
-  padding: 6px 8px;
+  padding: 7px 9px;
   background: green;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 50%;
   margin-top: 10px;
 }

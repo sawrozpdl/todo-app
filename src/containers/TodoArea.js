@@ -35,13 +35,14 @@ class App extends React.Component {
   handleEdit(id) {
     this.props.todos.forEach(todo => {
       if (todo.id == id) {
+        const target = document.getElementsByClassName(`todoContent${id}`)[0];
         todo.editMode = !todo.editMode;
-        todo.content = document.getElementsByClassName(`todoContent${id}`)[0].value;
+        if (todo.editMode) target.focus();
+        todo.content = target.value;
         return;
       }
     });
     this.forceUpdate();
-    console.log(this.props.todos);
   }
 
   handleDelete(id) {
