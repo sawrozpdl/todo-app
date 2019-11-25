@@ -7,3 +7,9 @@ body {
   font-family: sans-serif;
   background-color: bisque;
 }
+
+.cfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}

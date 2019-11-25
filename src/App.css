@@ -1,6 +1,23 @@
 .App {
-  max-width: 1200px;
-  margin: auto;
+  width: 100%;
   padding : 0px 15px;
   box-sizing: border-box;
+}
+
+
+@media only screen and (min-width: 768px) {
+
+  .App {
+    
+  }
+}
+
+
+@media only screen and (min-width: 1200px) {
+
+  .App {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0px 25px;
+  }
 }

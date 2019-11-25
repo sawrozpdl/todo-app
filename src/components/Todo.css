@@ -1,19 +1,51 @@
 .todo {
-
+    margin: 20px 0px;
 }
 
-.todo-isDone {
+.content-area {
+    width: 100%;
+    text-align: center;
+    margin : 5px 0px;
+}
 
+.button-area {
+    width: 100%;
+    text-align: center;
+}  
+
+.todo-isDone {
+    position: relative;
+    top : 2px;
+    margin-right: 5px;
 }
 
 .todo-content {
 
 }
 
-.todo-update-button {
+.todo-edit-button, .todo-delete-button {
+    background: green;
+    color : white;
+    border : none;
+    padding : 5px 8px;
+    margin-right: 5px;
+    border-radius: 10px;
+}
 
+.fa.fa-edit, .fa.fa-trash {
+    font-size: 15px;
 }
 
 @media only screen and (min-width: 768px) {
     
+    .content-area {
+        width: 50%;
+        float: left;
+    }
+    
+    .button-area {
+        width: 50%;
+        float: right;
+    } 
+
 }
