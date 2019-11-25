@@ -11,7 +11,9 @@ class App extends React.Component {
     };
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   handleSearchChange(data) {
@@ -23,10 +25,22 @@ class App extends React.Component {
   handleCheck(id) {
     this.props.todos.forEach(todo => {
       if (todo.id == id) {
-        if (todo.isDone) todo.isDone = false;
-        else todo.isDone = true;
+        todo.isDone = !todo.isDone;
+        return;
       }
     });
+    this.forceUpdate();
+  }
+
+  handleEdit(id) {
+    this.props.todos.forEach(todo => {
+      if (todo.id == id) {
+        todo.editMode = !todo.editMode;
+        todo.content = document.getElementsByClassName(`todoContent${id}`)[0].value;
+        return;
+      }
+    });
+    this.forceUpdate();
     console.log(this.props.todos);
   }
 
@@ -35,9 +49,20 @@ class App extends React.Component {
     for (let i = 0; i < todos.length; i++) {
       if (todos[i].id == id) {
         todos.splice(i, 1);
+        return;
       }
     }
-    console.log(this.props.todos);
+    this.forceUpdate();
+  }
+
+  handleAdd() {
+    this.props.todos.push({
+      id: Math.random() * 100,
+      content: "",
+      isDone: false,
+      editMode: true
+    });
+    this.forceUpdate();
   }
 
   render() {
@@ -51,7 +76,9 @@ class App extends React.Component {
           todos={this.props.todos}
           keyword={this.state.search}
           handleCheck={this.handleCheck}
+          handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}
+          handleAdd={this.handleAdd}
         />
       </div>
     );

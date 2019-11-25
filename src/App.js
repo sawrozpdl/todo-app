@@ -10,17 +10,20 @@ class App extends React.Component {
       {
         id : 1,
         content : 'complete this app',
-        isDone : false
+        isDone : false,
+        editMode:false
       },
       {
         id : 2,
         content : 'integrate backend',
-        isDone : false
+        isDone : false,
+        editMode:false
       },
       {
         id : 3,
         content : 'chill out',
-        isDone : false
+        isDone : false,
+        editMode:false
       }
     ];
   }

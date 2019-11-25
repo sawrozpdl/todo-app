@@ -5,7 +5,15 @@
 
 body {
   font-family: sans-serif;
-  background-color: bisque;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
 }
 
 .cfix::after {

@@ -6,7 +6,9 @@ class Todos extends React.Component {
   constructor(props) {
     super(props);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   handleCheck(id) {
@@ -15,6 +17,14 @@ class Todos extends React.Component {
 
   handleDelete(id) {
     this.props.handleDelete(id);
+  }
+
+  handleEdit(id) {
+      this.props.handleEdit(id);
+  }
+
+  handleAdd() {
+    this.props.handleAdd();
   }
 
   render() {
@@ -27,7 +37,9 @@ class Todos extends React.Component {
         <Todo
           todo = {todo}
           handleCheck={this.handleCheck}
+          handleEdit = {this.handleEdit}
           handleDelete={this.handleDelete}
+          key = {todo.id}
         />
       );
       if (todo.isDone) completed_todos.push(buffer);
@@ -37,6 +49,9 @@ class Todos extends React.Component {
       <div className="todos-container">
         <div className="todo-todos">{todo_todos}</div>
         <div className="completed-todos">{completed_todos}</div>
+        <div className='add-todo'> 
+            <button className = 'add-button' onClick = {this.handleAdd}><i className = 'fa fa-plus'></i></button>
+        </div>
       </div>
     );
   }
