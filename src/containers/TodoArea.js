@@ -1,4 +1,5 @@
 import React from "react";
+import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import Todos from "./Todos";
 import "./TodoArea.css";
@@ -68,19 +69,22 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="todo-area">
-        <SearchBar
-          onChange={this.handleSearchChange}
-          placeholder="Search todos"
-        />
-        <Todos
-          todos={this.props.todos}
-          keyword={this.state.search}
-          handleCheck={this.handleCheck}
-          handleEdit={this.handleEdit}
-          handleDelete={this.handleDelete}
-          handleAdd={this.handleAdd}
-        />
+      <div className="app-main">
+        <Header logoName="todo app" />
+        <div className="todo-area">
+          <SearchBar
+            onChange={this.handleSearchChange}
+            placeholder="Search todos"
+          />
+          <Todos
+            todos={this.props.todos}
+            keyword={this.state.search}
+            handleCheck={this.handleCheck}
+            handleEdit={this.handleEdit}
+            handleDelete={this.handleDelete}
+            handleAdd={this.handleAdd}
+          />
+        </div>
       </div>
     );
   }

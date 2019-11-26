@@ -30,9 +30,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className = 'App'>
-        <TodoArea todos = {this.data}/>
-      </div>
+      <TodoArea todos = {this.data}/>
     );
   }
 }

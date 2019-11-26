@@ -3,20 +3,20 @@
 }
 
 .todo-todos {
-  border: 1px solid red;
+  background: lightsalmon;
   border-radius: 10px;
-  margin-bottom: 20px;
 }
 
 .completed-todos {
-  border: 1px solid green;
+  background: lightseagreen;
   border-radius: 10px;
 }
 
-/* .todo-todos, .completed-todos {
-    text-align: center;
+.todo-todos, .completed-todos {
+    margin-bottom: 20px;
+    padding: 10px 0px;
 }
-
+/* 
 .todo-todos::before {
     content: 'Todos';
 }
@@ -34,7 +34,7 @@
 
 .add-button {
   padding: 7px 9px;
-  background: green;
+  background: rgba(0, 0, 0, 0.2);
   color: white;
   border: none;
   border-radius: 50%;
