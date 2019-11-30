@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import Todos from "./Todos";
 import "./TodoArea.css";
@@ -24,53 +23,24 @@ class App extends React.Component {
   }
 
   handleCheck(id) {
-    this.props.todos.forEach(todo => {
-      if (todo.id == id) {
-        todo.isDone = !todo.isDone;
-        return;
-      }
-    });
-    this.forceUpdate();
+    this.props.handleCheck(id);
   }
 
   handleEdit(id) {
-    this.props.todos.forEach(todo => {
-      if (todo.id == id) {
-        const target = document.getElementsByClassName(`todoContent${id}`)[0];
-        todo.editMode = !todo.editMode;
-        if (todo.editMode) target.focus();
-        todo.content = target.value;
-        return;
-      }
-    });
-    this.forceUpdate();
+    this.props.handleEdit(id)
   }
 
   handleDelete(id) {
-    let todos = this.props.todos;
-    for (let i = 0; i < todos.length; i++) {
-      if (todos[i].id == id) {
-        todos.splice(i, 1);
-        return;
-      }
-    }
-    this.forceUpdate();
+    this.props.handleDelete(id);
   }
 
   handleAdd() {
-    this.props.todos.push({
-      id: Math.random() * 100,
-      content: "",
-      isDone: false,
-      editMode: true
-    });
-    this.forceUpdate();
+    this.props.handleAdd();
   }
 
   render() {
     return (
       <div className="app-main">
-        <Header logoName="todo app" />
         <div className="todo-area">
           <SearchBar
             onChange={this.handleSearchChange}

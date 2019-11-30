@@ -1,0 +1,37 @@
+.login-form {
+    text-align: center;
+}
+
+.login-header {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 25px;
+    margin: 20px auto;
+}
+
+.username-input, .password-input, .email-input {
+    padding: 5px 8px;
+    color : grey;
+    display: block;
+    margin: 15px auto;
+    text-align: center;
+    border: none;
+    border-radius: 10px;
+}
+
+.username-input:focus, .password-input:focus, .email-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px 0 rgba(32, 178, 170, 0.5);
+}
+
+.button-input {
+    padding: 6px 12px;
+    background-color: rgb(32, 178, 170);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.button-input:focus {
+    outline:  none;
+}

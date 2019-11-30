@@ -14,7 +14,6 @@
 
 .todo-todos, .completed-todos {
     margin-bottom: 20px;
-    padding: 10px 0px;
 }
 /* 
 .todo-todos::before {

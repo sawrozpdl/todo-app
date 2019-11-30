@@ -1,11 +1,9 @@
 .todo {
-    margin: 20px 0px;
+    padding: 15px 0px;
 }
 
 .content-area {
-    width: 100%;
     text-align: center;
-    margin : 5px 0px;
 }
 
 .button-area {
@@ -15,10 +13,11 @@
 }  
 
 .todo-isDone {
-    margin-right: 5px;
+    margin-right: 12px;
     position: relative;
-    bottom: 11px;
-    height: 17px;
+    bottom: 9px;
+    width: 22px;
+    height: 22px;
 }
 
 .todo-content {

@@ -1,0 +1,14 @@
+.user-info {
+    
+}
+
+.user-info span {
+    color: white;
+    cursor: pointer;
+    line-height: 40px;
+}
+
+.user-info span:first-child::after {
+    content: "|";
+    margin: 0px 10px;
+}
