@@ -11,15 +11,16 @@ class Todo extends React.Component {
     }
 
     handleCheck(e) {
-        this.props.handleCheck(this.props.todo.id);
+        this.props.handleCheck(this.props.todo.todo_id);
     }
 
     handleEdit(e) {
-        this.props.handleEdit(this.props.todo.id);
+        console.log('at tododod', this.props.todo);
+        this.props.handleEdit(this.props.todo.todo_id);
     }
 
     handleDelete(e) {
-        this.props.handleDelete(this.props.todo.id);
+        this.props.handleDelete(this.props.todo.todo_id);
     }
 
     render() {
@@ -29,7 +30,7 @@ class Todo extends React.Component {
             <div className = 'todo cfix'>
                 <div className = 'content-area'>
                     <input className = 'todo-isDone' type = 'checkbox' name = 'isDone' onClick = {this.handleCheck} checked = {this.props.todo.isDone}/>
-                    <textarea className = {`todo-content todoContent${this.props.todo.id}`} readOnly = {!this.props.todo.editMode} style = {{textDecoration: `${textDecor}`}}>{this.props.todo.content}</textarea>
+                    <textarea className = {`todo-content todoContent${this.props.todo.todo_id}`} readOnly = {!this.props.todo.editMode} style = {{textDecoration: `${textDecor}`}}>{this.props.todo.content}</textarea>
                 </div>
                 <div className = 'button-area'>
                     <button className = 'todo-edit-button' onClick = {this.handleEdit}><i className = {editClass}></i></button>

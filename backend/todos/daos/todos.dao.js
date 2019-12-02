@@ -1,7 +1,7 @@
 const query = require('../../components/sql/query');
 
-function insert(todo, tags) {
-    return query(`INSERT into todos values(NULL , '${todo}', NULL, '${tags}');`);
+function insert(todo) {
+    return query(`INSERT into todos values(${(todo.id) ? todo.id : 'NULL'}, '${todo.content}', NULL, '${(todo.tags) ? todos.tags : 'todo'}', 'false', 'false');`);
 }
 
 function update(todo_id, updates) {

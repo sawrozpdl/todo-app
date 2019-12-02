@@ -1,7 +1,6 @@
 const todosDao = require("../daos/todos.dao");
 
 function findAll() {
-    console.log('todo finding');
   return todosDao.select("*");
 }
 
@@ -32,7 +31,6 @@ function getTodoBy(info, todo_id) {
 }
 
 function getTodosFor(user) {
-  console.log('get todos for');
   return todosDao.selectJoin('todos.todo_id, content, isDone',{
       users_username : user // users.username = user
   }, {
@@ -44,8 +42,8 @@ function getTodosFor(user) {
   });
 }
 
-function add(todo, tags) {
-  return todosDao.insert(todo, tags);
+function add(todo) {
+  return todosDao.insert(todo);
 }
 
 function remove(todo_id) {

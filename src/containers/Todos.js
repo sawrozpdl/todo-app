@@ -39,7 +39,7 @@ class Todos extends React.Component {
           handleCheck={this.handleCheck}
           handleEdit = {this.handleEdit}
           handleDelete={this.handleDelete}
-          key = {todo.id}
+          key = {todo.todo_id}
         />
       );
       if (todo.isDone) completed_todos.push(buffer);

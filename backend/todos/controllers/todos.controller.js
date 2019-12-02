@@ -1,7 +1,7 @@
 todoService = require("../services/todos.service");
 
 function getTodos(req, res, next) {
-  if (req.userRole === "admin") getAllTodos(req, res, next);
+  if (req.body.userRole === "admin") getAllTodos(req, res, next);
   else getTodosOf(req, res, next);
 }
 
@@ -39,13 +39,9 @@ function getTodosOf(req, res, next) {
 
 function addTodo(req, res, next) {
   todoService
-    .add(req.body.content, req.body.tags)
+    .add(req.body.todo)
     .then(function(success) {
-      return todoService.idFor(req.body.content) // if values to be passed use return 
-    })
-    .then(function(result) { // result is the above returned output
-      let todo_id = result[0].todo_id;
-      todoService.registerTodoFor(req.body.username, todo_id)
+      todoService.registerTodoFor(req.body.username, req.body.todo.todo_id)
     })
     .then(function(success) {
       res.json({
@@ -113,17 +109,33 @@ function getTodo(req, res, next) {
     });
 }
 
+function updateTodo(req, res, next) {
+  todoService
+  .patch(req.params.todo_id, req.body.todo)
+  .then(function(result) {
+    res.json({
+      status: "success",
+      msg: "Todo Updated"
+    });
+  })
+  .catch(function(error) {
+    next({
+      msg: error
+    });
+  });
+}
+
 function addTags(req, res, next) {
   todoService
     .find(req.params.todo_id)
     .then(function(result) {
       todoService.patch(req.params.todo_id, {
-        tags: result[0].tags + req.body.tags
+        tags: result[0].tags + req.body.todo.tags
       });
     })
     .then(function(success) {
       res.json({
-        status: "success"
+        status: "success" 
       });
     })
     .catch(function(error) {
@@ -138,6 +150,7 @@ module.exports = {
   addTodo,
   addTags,
   removeTodo,
+  updateTodo,
   putTodo,
   getTodo
 };

@@ -34,12 +34,12 @@ class App extends React.Component {
 
   onLogoutClick() {
     this.setState({
-      username : '',
-      accessKey : '',
-      todos : [],
-      todoArea : false
+      username: "",
+      accessKey: "",
+      todos: [],
+      todoArea: false
     });
-    localStorage.setItem('refreshToken', '');
+    localStorage.setItem("refreshToken", "");
   }
 
   onSignupClick() {
@@ -48,8 +48,12 @@ class App extends React.Component {
 
   handleCheck(id) {
     this.state.todos.forEach(todo => {
-      if (todo.id == id) {
+      if (todo.todo_id == id) {
         todo.isDone = !todo.isDone;
+        this.updateTodo({
+          todo_id : todo.todo_id,
+          isDone : todo.isDone
+        });
         return;
       }
     });
@@ -59,12 +63,18 @@ class App extends React.Component {
   }
 
   handleEdit(id) {
+    console.log('You clicked => ', id);
     this.state.todos.forEach(todo => {
-      if (todo.id == id) {
+      if (todo.todo_id == id) {
         const target = document.getElementsByClassName(`todoContent${id}`)[0];
         todo.editMode = !todo.editMode;
-        if (todo.editMode) target.focus();
         todo.content = target.value;
+        if (todo.editMode) target.focus();
+        this.updateTodo({
+          todo_id : todo.todo_id,
+          content : todo.content,
+          editMode : todo.editMode
+        });
         return;
       }
     });
@@ -76,8 +86,9 @@ class App extends React.Component {
   handleDelete(id) {
     let todos = this.state.todos;
     for (let i = 0; i < todos.length; i++) {
-      if (todos[i].id == id) {
+      if (todos[i].todo_id == id) {
         todos.splice(i, 1);
+
         return;
       }
     }
@@ -87,12 +98,14 @@ class App extends React.Component {
   }
 
   handleAdd() {
-    this.state.todos.push({
-      id: Math.random() * 100,
+    let buffer = {
+      todo_id: Math.random() * 100,
       content: "",
       isDone: false,
       editMode: true
-    });
+    };
+    this.addTodo(buffer);
+    this.state.todos.push(buffer);
     this.setState({
       todos: this.state.todos
     });
@@ -138,20 +151,67 @@ class App extends React.Component {
       });
   }
 
+  addTodo(todo) {
+    fetch("http://127.0.0.1:5000/api/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `bearer ${this.state.accessKey}`
+      },
+      body: getUriForm(todo)
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log("todos added ", json);
+      });
+  }
+
+  removeTodo(todo) {
+    fetch(`http://127.0.0.1:5000/api/todos/${todo.todo_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `bearer ${this.state.accessKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log("todos added ", json);
+      });
+  }
+
+  async updateTodo(todo) {
+    await fetch(`http://127.0.0.1:5000/api/todos/${todo.todo_id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `bearer ${this.state.accessKey}`
+      },
+      body: getUriForm(todo) // updates in this todo
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log("todos added ", json);
+      });
+  }
+
   refreshAccessKey() {
     fetch("http://127.0.0.1:5000/api/refreshToken", {
       method: "GET",
       headers: {
         refreshtoken: localStorage.getItem("refreshToken")
       }
-    }).then(response => response.json()).then(json => {
-      this.setState({
-        accessKey : json.accessToken
-      })
-    });
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          accessKey: json.accessToken
+        });
+      });
   }
 
-  async populateTodos() { // making this synchronous
+  async populateTodos() {
+    // making this synchronous
     await fetch("http://127.0.0.1:5000/api/todos", {
       method: "GET",
       headers: {

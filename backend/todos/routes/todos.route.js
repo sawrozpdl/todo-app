@@ -9,7 +9,7 @@ router.route('/:todo_id')
     .get(todoControl.getTodo)
     .put(todoControl.putTodo)
     .delete(todoControl.removeTodo)
-    .patch(todoControl.addTags)
+    .patch(todoControl.updateTodo)
     
 
 module.exports = router;
