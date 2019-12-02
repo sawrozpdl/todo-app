@@ -32,7 +32,7 @@ class Todos extends React.Component {
     let todo_todos = [];
     let completed_todos = [];
     todos.forEach(todo => {
-      if (!todo.content.includes(this.props.keyword.toLowerCase())) return;
+      if (!todo.content.includes(this.props.keyword.toLowerCase()) || todo.deletedAt) return;
       let buffer = (
         <Todo
           todo = {todo}

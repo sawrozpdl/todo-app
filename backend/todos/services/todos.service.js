@@ -31,8 +31,8 @@ function getTodoBy(info, todo_id) {
 }
 
 function getTodosFor(user) {
-  return todosDao.selectJoin('todos.todo_id, content, isDone',{
-      users_username : user // users.username = user
+  return todosDao.selectJoin('todos.todo_id, content, isDone, todos.deletedAt',{
+      users_username : user // users.username = user,
   }, {
       tableName : 'link',
       condition : 'todo_id'

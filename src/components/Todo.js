@@ -15,7 +15,6 @@ class Todo extends React.Component {
     }
 
     handleEdit(e) {
-        console.log('at tododod', this.props.todo);
         this.props.handleEdit(this.props.todo.todo_id);
     }
 

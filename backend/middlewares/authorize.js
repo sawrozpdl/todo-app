@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
 module.exports = function(req, res, next) {
-    console.log('auth', req.headers);
     if (!req.headers.authorization) {
         return next({
             msg : 'Please login for the access',
@@ -16,7 +15,6 @@ module.exports = function(req, res, next) {
             status : 401
         });
     }
-    console.log('Server got -> ', receivedToken);
     jwt.verify(receivedToken, config.accessTokenSecret, function(error, decoded) {
         if (error) {
             next({

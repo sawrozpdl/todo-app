@@ -49,10 +49,10 @@ class App extends React.Component {
   handleCheck(id) {
     this.state.todos.forEach(todo => {
       if (todo.todo_id == id) {
-        todo.isDone = !todo.isDone;
+        todo.isDone = +!todo.isDone;
         this.updateTodo({
-          todo_id : todo.todo_id,
-          isDone : todo.isDone
+          todo_id: todo.todo_id,
+          isDone: todo.isDone
         });
         return;
       }
@@ -63,17 +63,17 @@ class App extends React.Component {
   }
 
   handleEdit(id) {
-    console.log('You clicked => ', id);
+    console.log("You clicked => ", id);
     this.state.todos.forEach(todo => {
       if (todo.todo_id == id) {
         const target = document.getElementsByClassName(`todoContent${id}`)[0];
-        todo.editMode = !todo.editMode;
+        todo.editMode = +!todo.editMode;
         todo.content = target.value;
         if (todo.editMode) target.focus();
         this.updateTodo({
-          todo_id : todo.todo_id,
-          content : todo.content,
-          editMode : todo.editMode
+          todo_id: todo.todo_id,
+          content: todo.content,
+          editMode: todo.editMode
         });
         return;
       }
@@ -88,10 +88,12 @@ class App extends React.Component {
     for (let i = 0; i < todos.length; i++) {
       if (todos[i].todo_id == id) {
         todos.splice(i, 1);
-
         return;
       }
     }
+    this.removeTodo({
+      todo_id : id
+    });
     this.setState({
       todos: todos
     });
@@ -99,10 +101,10 @@ class App extends React.Component {
 
   handleAdd() {
     let buffer = {
-      todo_id: Math.random() * 100,
+      todo_id: Math.floor(Math.random() * 100),
       content: "",
-      isDone: false,
-      editMode: true
+      isDone: 0,
+      editMode: 1
     };
     this.addTodo(buffer);
     this.state.todos.push(buffer);
@@ -135,11 +137,9 @@ class App extends React.Component {
     })
       .then(response => response.json())
       .then(json => {
-        console.log(json.username);
         this.setState({
           username: json.username
         });
-        console.log(json);
         this.setState({
           accessKey: json.accessToken
         });
@@ -155,10 +155,10 @@ class App extends React.Component {
     fetch("http://127.0.0.1:5000/api/todos", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         Authorization: `bearer ${this.state.accessKey}`
       },
-      body: getUriForm(todo)
+      body: JSON.stringify({ todo: todo })
     })
       .then(response => response.json())
       .then(json => {
@@ -184,10 +184,10 @@ class App extends React.Component {
     await fetch(`http://127.0.0.1:5000/api/todos/${todo.todo_id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         Authorization: `bearer ${this.state.accessKey}`
       },
-      body: getUriForm(todo) // updates in this todo
+      body: JSON.stringify({ todo: todo })
     })
       .then(response => response.json())
       .then(json => {

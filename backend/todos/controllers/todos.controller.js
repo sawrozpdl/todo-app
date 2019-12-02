@@ -57,6 +57,7 @@ function addTodo(req, res, next) {
 }
 
 function removeTodo(req, res, next) {
+  console.log('REMOVE THEI SDFJKD');
   todoService
     .remove(req.params.todo_id)
     .then(function(result) {
@@ -110,6 +111,7 @@ function getTodo(req, res, next) {
 }
 
 function updateTodo(req, res, next) {
+  console.log(req.body.todo);
   todoService
   .patch(req.params.todo_id, req.body.todo)
   .then(function(result) {

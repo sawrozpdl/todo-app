@@ -1,10 +1,11 @@
 const query = require('../../components/sql/query');
 
 function insert(todo) {
-    return query(`INSERT into todos values(${(todo.id) ? todo.id : 'NULL'}, '${todo.content}', NULL, '${(todo.tags) ? todos.tags : 'todo'}', 'false', 'false');`);
+    return query(`INSERT into todos values('${(todo.todo_id) ? todo.todo_id : 'NULL'}', 'content', NULL, '${(todo.tags) ? todos.tags : 'todo'}', '0', '0');`);
 }
 
 function update(todo_id, updates) {
+    console.log('updates=> ', updates);
     let ups = '';
     for (let key in updates) 
         ups += `${key} = '${updates[key]}', `;
