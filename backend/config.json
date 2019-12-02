@@ -1,0 +1,7 @@
+{
+    "port" : 5000,
+    "accessTokenSecret" : "sawroz",
+    "refreshTokenSecret" : "rozpdl",
+    "accessTokenLifeSpan" : "1d",
+    "refreshTokenLifeSpan" : "100d"
+}

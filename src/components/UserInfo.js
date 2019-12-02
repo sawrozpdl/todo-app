@@ -1,5 +1,6 @@
 import React from "react";
 import "./UserInfo.css";
+import { Link } from "react-router-dom";
 
 class UserInfo extends React.Component {
   constructor(props) {
@@ -10,15 +11,15 @@ class UserInfo extends React.Component {
   }
 
   handleLogin() {
-      this.props.handleLogin();
+    this.props.onLoginClick();
   }
 
   handleSignup() {
-      this.props.handleSignup();
+    this.props.onSignupClick();
   }
 
   handleLogout() {
-      this.props.handleLogout();
+    this.props.onLogoutClick();
   }
 
   render() {
@@ -26,13 +27,21 @@ class UserInfo extends React.Component {
       <div>
         {this.props.user ? (
           <div className="user-info">
-            <span>{this.props.user.username}</span>
-            <span onClick={this.handleLogout}>Logout</span>
+            <Link to="/todos">
+              <span>{this.props.user}</span>
+            </Link>
+            <Link to="/">
+              <span onClick={this.handleLogout}>Logout</span>
+            </Link>
           </div>
         ) : (
           <div className="user-info">
-            <span onClick={this.handleSignup}>Signup</span>
-            <span onClick={this.handleLogin}>Login</span>
+            <Link to="/signup">
+              <span onClick={this.handleSignup}>Signup</span>
+            </Link>
+            <Link to="/login">
+              <span onClick={this.handleLogin}>Login</span>
+            </Link>
           </div>
         )}
       </div>

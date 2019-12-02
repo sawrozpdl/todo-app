@@ -1,46 +1,49 @@
 import React from "react";
+import WelcomePage from "./components/WelcomePage.js";
 import Singup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import TodoArea from "./containers/TodoArea";
+import { getUriForm } from "./utils/Utils";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: []
+      todos: [],
+      username: "",
+      todoArea: false,
+      accessKey: ""
     };
     this.handleCheck = this.handleCheck.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
+    this.logInUser = this.logInUser.bind(this);
+    this.onLoginClick = this.onLoginClick.bind(this);
+    this.onSignupClick = this.onSignupClick.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
   }
 
-  componentWillMount() {
+  onLoginClick() {
+    console.log("login");
+  }
+
+  onLogoutClick() {
     this.setState({
-      todos: [
-        {
-          id: 1,
-          content: "complete this app",
-          isDone: false,
-          editMode: false
-        },
-        {
-          id: 2,
-          content: "integrate backend",
-          isDone: false,
-          editMode: false
-        },
-        {
-          id: 3,
-          content: "chill out",
-          isDone: false,
-          editMode: false
-        }
-      ]
+      username : '',
+      accessKey : '',
+      todos : [],
+      todoArea : false
     });
+    localStorage.setItem('refreshToken', '');
+  }
+
+  onSignupClick() {
+    console.log("signup");
   }
 
   handleCheck(id) {
@@ -96,22 +99,127 @@ class App extends React.Component {
   }
 
   signUpUser(user) {
-    console.log(user);
+    fetch("http://127.0.0.1:5000/api/signup", {
+      method: "POST",
+      body: getUriForm(user),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${this.state.acessKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(json => console.log(json));
+  }
+
+  logInUser(user) {
+    fetch("http://127.0.0.1:5000/api/login", {
+      method: "POST",
+      body: getUriForm(user),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${this.state.accessKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log(json.username);
+        this.setState({
+          username: json.username
+        });
+        console.log(json);
+        this.setState({
+          accessKey: json.accessToken
+        });
+        localStorage.setItem("refreshKey", json.refreshToken);
+        this.populateTodos();
+        this.setState({
+          todoArea: true
+        });
+      });
+  }
+
+  refreshAccessKey() {
+    fetch("http://127.0.0.1:5000/api/refreshToken", {
+      method: "GET",
+      headers: {
+        refreshtoken: localStorage.getItem("refreshToken")
+      }
+    }).then(response => response.json()).then(json => {
+      this.setState({
+        accessKey : json.accessToken
+      })
+    });
+  }
+
+  async populateTodos() { // making this synchronous
+    await fetch("http://127.0.0.1:5000/api/todos", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `bearer ${this.state.accessKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log("JSONY", json);
+        this.setState({
+          todos: json.data
+        });
+      });
   }
 
   render() {
     return (
-      <div className="container">
-        <Header logoName="todo app" />
-        <Singup handleSignup = {this.signUpUser} title = 'SignUp to TODO App'/>
-        <TodoArea
-          todos={this.state.todos}
-          handleCheck={this.handleCheck}
-          handleEdit={this.handleEdit}
-          handleDelete={this.handleDelete}
-          handleAdd={this.handleAdd}
+      <Router>
+        {this.state.todoArea ? <Redirect to="/todos" /> : <div> </div>}
+        <Header
+          user={this.state.username}
+          logoName="todo app"
+          onLoginClick={this.onLoginClick}
+          onSignupClick={this.onSignupClick}
+          onLogoutClick={this.onLogoutClick}
         />
-      </div>
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <WelcomePage {...props} title="Welcome to TODO App" />
+          )}
+        />
+        <Route
+          path="/signup"
+          render={props => (
+            <Singup
+              {...props}
+              handleSignup={this.signUpUser}
+              title="SignUp to TODO App"
+            />
+          )}
+        />
+        <Route
+          path="/login"
+          render={props => (
+            <Login
+              {...props}
+              handleLogin={this.logInUser}
+              title="LogIn to TODO App"
+            />
+          )}
+        />
+        <Route
+          path="/todos"
+          render={props => (
+            <TodoArea
+              {...props}
+              todos={this.state.todos}
+              handleCheck={this.handleCheck}
+              handleEdit={this.handleEdit}
+              handleDelete={this.handleDelete}
+              handleAdd={this.handleAdd}
+            />
+          )}
+        />
+      </Router>
     );
   }
 }

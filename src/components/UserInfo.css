@@ -2,13 +2,15 @@
     
 }
 
-.user-info span {
+.user-info a {
     color: white;
     cursor: pointer;
     line-height: 40px;
+    text-decoration: none;
 }
 
-.user-info span:first-child::after {
+.user-info a:first-child::after {
+    color: white;
     content: "|";
     margin: 0px 10px;
 }
