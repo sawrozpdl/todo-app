@@ -4,9 +4,11 @@ import Singup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import TodoArea from "./containers/TodoArea";
+import Api from './utils/Api';
 import { getUriForm } from "./utils/Utils";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
+import Api from "./utils/Api.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -26,6 +28,8 @@ class App extends React.Component {
     this.onLoginClick = this.onLoginClick.bind(this);
     this.onSignupClick = this.onSignupClick.bind(this);
     this.onLogoutClick = this.onLogoutClick.bind(this);
+
+    this.api = new Api('127.0.0.1', 'api', 5000);
   }
 
   onLoginClick() {
