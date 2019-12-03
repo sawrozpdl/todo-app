@@ -28,8 +28,8 @@ class Todo extends React.Component {
         return (
             <div className = 'todo cfix'>
                 <div className = 'content-area'>
-                    <input className = 'todo-isDone' type = 'checkbox' name = 'isDone' onClick = {this.handleCheck} checked = {this.props.todo.isDone}/>
-                    <textarea className = {`todo-content todoContent${this.props.todo.todo_id}`} readOnly = {!this.props.todo.editMode} style = {{textDecoration: `${textDecor}`}}>{this.props.todo.content}</textarea>
+                    <input className = 'todo-isDone' type = 'checkbox' name = 'isDone' onClick = {this.handleCheck} checked = {this.props.todo.isDone} readOnly = {true}/>
+                    <textarea className = {`todo-content todoContent${this.props.todo.todo_id}`} readOnly = {!this.props.todo.editMode} style = {{textDecoration: `${textDecor}`}} defaultValue = {this.props.todo.content} />
                 </div>
                 <div className = 'button-area'>
                     <button className = 'todo-edit-button' onClick = {this.handleEdit}><i className = {editClass}></i></button>

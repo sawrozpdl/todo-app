@@ -4,11 +4,9 @@ import Singup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import TodoArea from "./containers/TodoArea";
-import Api from './utils/Api';
-import { getUriForm } from "./utils/Utils";
+import Api from "./utils/Api";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
-import Api from "./utils/Api.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -29,7 +27,7 @@ class App extends React.Component {
     this.onSignupClick = this.onSignupClick.bind(this);
     this.onLogoutClick = this.onLogoutClick.bind(this);
 
-    this.api = new Api('127.0.0.1', 'api', 5000);
+    this.api = new Api("127.0.0.1", "api", 5000);
   }
 
   onLoginClick() {
@@ -96,7 +94,7 @@ class App extends React.Component {
       }
     }
     this.removeTodo({
-      todo_id : id
+      todo_id: id
     });
     this.setState({
       todos: todos
@@ -118,28 +116,22 @@ class App extends React.Component {
   }
 
   signUpUser(user) {
-    fetch("http://127.0.0.1:5000/api/signup", {
-      method: "POST",
-      body: getUriForm(user),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${this.state.acessKey}`
-      }
-    })
-      .then(response => response.json())
+    this.api
+      .post({
+        endpoint: "signup",
+        content: user,
+        json: false
+      })
       .then(json => console.log(json));
   }
 
   logInUser(user) {
-    fetch("http://127.0.0.1:5000/api/login", {
-      method: "POST",
-      body: getUriForm(user),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${this.state.accessKey}`
-      }
-    })
-      .then(response => response.json())
+    this.api
+      .post({
+        endpoint: "login",
+        content: user,
+        json: false
+      })
       .then(json => {
         this.setState({
           username: json.username
@@ -147,6 +139,7 @@ class App extends React.Component {
         this.setState({
           accessKey: json.accessToken
         });
+        this.api.setAccessKey(this.state.accessKey);
         localStorage.setItem("refreshKey", json.refreshToken);
         this.populateTodos();
         this.setState({
@@ -156,74 +149,63 @@ class App extends React.Component {
   }
 
   addTodo(todo) {
-    fetch("http://127.0.0.1:5000/api/todos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${this.state.accessKey}`
-      },
-      body: JSON.stringify({ todo: todo })
-    })
-      .then(response => response.json())
+    this.api
+      .post({
+        endpoint: "todos",
+        content: {todo},
+        json: true
+      })
       .then(json => {
         console.log("todos added ", json);
       });
   }
 
   removeTodo(todo) {
-    fetch(`http://127.0.0.1:5000/api/todos/${todo.todo_id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `bearer ${this.state.accessKey}`
-      }
-    })
-      .then(response => response.json())
+    this.api
+      .delete({
+        endpoint: "todos",
+        content: {todo},
+        json: true,
+        subEndpoint: todo.todo_id
+      })
       .then(json => {
         console.log("todos added ", json);
       });
   }
 
   async updateTodo(todo) {
-    await fetch(`http://127.0.0.1:5000/api/todos/${todo.todo_id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${this.state.accessKey}`
-      },
-      body: JSON.stringify({ todo: todo })
-    })
-      .then(response => response.json())
+    await this.api
+      .patch({
+        endpoint: "todos",
+        content: {todo},
+        json: true,
+        subEndpoint: todo.todo_id
+      })
       .then(json => {
         console.log("todos added ", json);
       });
   }
 
   refreshAccessKey() {
-    fetch("http://127.0.0.1:5000/api/refreshToken", {
-      method: "GET",
-      headers: {
-        refreshtoken: localStorage.getItem("refreshToken")
-      }
-    })
-      .then(response => response.json())
+    this.api
+      .get({
+        endpoint: "refreshToken",
+        refreshToken: localStorage.getItem("refreshToken")
+      })
       .then(json => {
         this.setState({
           accessKey: json.accessToken
         });
+        this.api.setAccessKey(this.state.accessKey);
       });
   }
 
   async populateTodos() {
     // making this synchronous
-    await fetch("http://127.0.0.1:5000/api/todos", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `bearer ${this.state.accessKey}`
-      }
-    })
-      .then(response => response.json())
+    await this.api
+      .get({
+        endpoint: "todos"
+      })
       .then(json => {
         console.log("JSONY", json);
         this.setState({
